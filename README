@@ -6,12 +6,37 @@
 
 RecordsSequence
 =============
+  This plugin adds 'next/previous' to every ActiveRecord objects. Using it you could find next/previous object even accroding your requirements
 
+INSTALL
+============
+This plugin requires Rails 2.1 currently. Install easily by below command:
+  ruby script/plugin install git://github.com/Aaron2Ti/records_sequence.git
 
-
-Example
+USAGE
 =======
+After installed, this plugin would mixin two methods(next and previous) to every ActiveRecord object. So it's cool to do:
+  class User < ActiveRecord::Base
+  end
 
+  foo = User.first
+  bar = foo.next
+  foo_neighbour = foo.previous  # returns nil if foo has no previous neighbour
+
+The sequence's sorted column is defined by the new option :sorted_by, default is the 'id' column.
+  foo = User.last
+  pre_foo_sorted_by_id = foo.previous
+  pre_foo_sorted_by_age = foo.previous(:sorted_by => 'age')
+
+Also works fine with most other ActiveRecord's find options:
+  foo = User.find 30
+  foo.next(:conditions => ['age < ?', 20])
+  foo.previous(:offset => 2)
+  foo.next(:sorted_by => 'age', :order => 'name DESC, age')
+  foo.previous( :sorted_by => 'age', :conditions => ['age < ?', 20],
+                :order => 'name DESC, age', :offset => 2 )
+
+Please Try Yourself!
 
 
 Copyright (c) 2008 [Aaron Tian Email: Aaron2Ti@gmail.com],
